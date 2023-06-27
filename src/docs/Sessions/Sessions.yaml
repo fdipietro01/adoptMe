@@ -1,0 +1,64 @@
+paths:
+  /api/sessions/register:
+    post:
+      summary: Crea registro de un usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createUser"
+      responses:
+        "200":
+          description: Usuario registrado satisfactoriamente
+        "500":
+          description: Error al registrar usuario
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por mongo
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: email del usuario, debe ser único
+        password:
+          type: string
+          description: contraseña del usuario
+      example:
+        _id: ObjectId("aosdn89jasdj932032asd")
+        first_name: "Flavio"
+        last_name: "Di Pietro"
+        email: "fdipietro01@gmail.com"
+        password: "$asd98jadsjjj12?123a"
+  requestBodies:
+    createUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: correo del usuario, debe ser único
+        password:
+          type: string
+          description: contraseña del usuario
+      example:
+        first_name: Flavio
+        last_name: Di Pietro
+        email: flavio@123.com
+        password: fla123

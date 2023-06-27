@@ -1,0 +1,103 @@
+paths:
+  /api/users/:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Los usuarios fueron obtenidos correctamente de la db
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/User"
+        "500":
+          description: Error interno del servidor, revisar querys y conexión a la db
+  /api/users/{uid}:
+    get:
+      summary: Obtiene un usuario a partir de su id
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El id del usuario que se desea solicitar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Usuario encontrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "500":
+          description: Error interno del servidor, revisar querys y conexión a la db
+    put:
+      summary: Modifica un usuario a partir de su id
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El id del usuario que se desea solicitar
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateUser"
+
+  components:
+    schemas:
+      User:
+        type: object
+        properties:
+          _id:
+            type: string
+            description: Id autogenerado por mongo
+          first_name:
+            type: string
+            description: Nombre del usuario
+          last_name:
+            type: string
+            description: apellido del usuario
+          email:
+            type: string
+            description: email del usuario, debe ser único
+          password:
+            type: string
+            description: contraseña del usuario
+        example:
+          _id: ObjectId("aosdn89jasdj932032asd")
+          first_name: "Flavio"
+          last_name: "Di Pietro"
+          email: "fdipietro01@gmail.com"
+          password: "$asd98jadsjjj12?123a"
+  requestBodies:
+    updateUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: correo del usuario, debe ser único
+        password:
+          type: string
+          description: contraseña del usuario
+      example:
+        first_name: Flavio
+        last_name: Di Pietro
+        email: flavio@123.com
+        password: fla123

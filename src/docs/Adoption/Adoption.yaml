@@ -1,0 +1,47 @@
+paths:
+  /api/adoption/{uid}/{pid}:
+    post:
+      summary: Crea un registro de adopción a partir del adoptante y la mascota
+      tags:
+        - Adoption
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El id del usuario que generó la adopción
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: El id de la mascota adoptada
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Registro de adopción creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Adoption"
+        "500":
+          description: Error interno del servidor, revisar querys y conexión a la db
+
+components:
+  schemas:
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado por mongo
+        owner:
+          type: string
+          description: Id en referencia al usuario
+        pet:
+          type: string
+          description: Id en referencia a la mascota
+      example:
+        _id: ObjectId("aknj09f212bnxc891ber65s")
+        owner: ObjectId("aosdn89jasdj932032asd")
+        pet: ObjectId("th81kaqw8i91kk45rzc38hg")
