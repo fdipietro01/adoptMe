@@ -13,13 +13,21 @@ import path from "path";
 import { fileURLToPath } from "url";
 import logger from "./logger/loggerConfig.js";
 import addLogger from "./middleware/loggerMiddleware.js";
+import dotenv from "dotenv";
+import handlebars from "express-handlebars";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+dotenv.config();
+
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 const connection = mongoose.connect(process.env.MONGO_URL);
+
+app.engine("handlebars", handlebars.engine());
+app.set("views", `${__dirname}/views`);
+app.set("view engine", "handlebars");
 
 const swaggerOpts = {
   definition: {
@@ -39,6 +47,9 @@ app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.render("index", {});
+});
 app.use("/api/users", usersRouter);
 app.use("/api/pets", petsRouter);
 app.use("/api/adoptions", adoptionsRouter);
